@@ -43,11 +43,13 @@ public class ManageNhanVien {
                 index = i;
             }
         }
-        for (int i = 0; i < newNV.length; i++) {
-            if (i < index) {
-                newNV[i] = nhanViens[i];
-            } else {
-                newNV[i] = nhanViens[i + 1];
+        if (index != -1) {
+            for (int i = 0; i < newNV.length; i++) {
+                if (i < index) {
+                    newNV[i] = nhanViens[i];
+                } else {
+                    newNV[i] = nhanViens[i + 1];
+                }
             }
         }
         nhanViens = newNV;
@@ -70,10 +72,12 @@ public class ManageNhanVien {
         int choice1 = Integer.parseInt(scanner.nextLine());
         switch (choice1) {
             case 1:
-                add(createNhanVien(true));
+                NhanVien nhanVienFull = createNhanVien(true);
+                add(nhanVienFull);
                 break;
             case 2:
-                add(createNhanVien(false));
+                NhanVien nhanVienPart = createNhanVien(false);
+                add(nhanVienPart);
                 break;
         }
     }
