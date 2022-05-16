@@ -14,24 +14,90 @@ public class ManageNhanVien {
         int choice = Integer.parseInt(scanner.nextLine());
         switch (choice) {
             case 1:
-                System.out.println("1. Tạo FullTime");
-                System.out.println("2. Tạo PartTime");
-                int choice1 = Integer.parseInt(scanner.nextLine());
-                switch (choice1) {
-                    case 1:
-                        add(createNhanVien(true));
-                        break;
-                    case 2:
-                        add(createNhanVien(false));
-                        break;
-                }
+                showCreateNV();
+                break;
+            case 2:
+                editNV();
+                break;
+            case 3:
+                deleteNV();
+                break;
+            case 4:
+                showTinhLuong();
                 break;
             case 5:
-                for (NhanVien nv:nhanViens) {
+                for (NhanVien nv : nhanViens) {
                     System.out.println(nv);
                 }
         }
 
+    }
+
+    public void deleteNV() {
+        NhanVien[] newNV = new NhanVien[nhanViens.length - 1];
+        System.out.println("Nhập id muốn xóa");
+        int id = Integer.parseInt(scanner.nextLine());
+        int index = -1;
+        for (int i = 0; i < nhanViens.length; i++) {
+            if (nhanViens[i].getId() == id) {
+                index = i;
+            }
+        }
+        for (int i = 0; i < newNV.length; i++) {
+            if (i < index) {
+                newNV[i] = nhanViens[i];
+            } else {
+                newNV[i] = nhanViens[i + 1];
+            }
+        }
+        nhanViens = newNV;
+    }
+
+    public void editNV() {
+        System.out.println("Nhập id nhân viên muốn sửa :");
+        int id = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < nhanViens.length; i++) {
+            if (nhanViens[i].getId() == id) {
+                nhanViens[i] = createNhanVien(nhanViens[i] instanceof FullTime);
+            }
+        }
+    }
+
+
+    public void showCreateNV() {
+        System.out.println("1. Tạo FullTime");
+        System.out.println("2. Tạo PartTime");
+        int choice1 = Integer.parseInt(scanner.nextLine());
+        switch (choice1) {
+            case 1:
+                add(createNhanVien(true));
+                break;
+            case 2:
+                add(createNhanVien(false));
+                break;
+        }
+    }
+
+    public void showTinhLuong() {
+        System.out.println("1. FullTime");
+        System.out.println("2. PartTime");
+        int choice2 = Integer.parseInt(scanner.nextLine());
+        switch (choice2) {
+            case 1:
+                for (NhanVien nv : nhanViens) {
+                    if (nv instanceof FullTime) {
+                        System.out.println(nv.getName() + " = " + nv.tinhLuong());
+                    }
+                }
+                break;
+            case 2:
+                for (NhanVien nv : nhanViens) {
+                    if (nv instanceof PartTime) {
+                        System.out.println(nv.getName() + " = " + nv.tinhLuong());
+                    }
+                }
+                break;
+        }
     }
 
     public NhanVien createNhanVien(boolean isFullTime) {
