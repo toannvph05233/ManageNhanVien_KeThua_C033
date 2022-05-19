@@ -1,7 +1,11 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class ManageNhanVien {
-    NhanVien[] nhanViens = new NhanVien[0];
+    //    NhanVien[] nhanViens = new NhanVien[0];
+    ArrayList<NhanVien> nhanViens = new ArrayList<>();
     Scanner scanner = new Scanner(System.in);
 
     public void menu() {
@@ -10,7 +14,8 @@ public class ManageNhanVien {
         System.out.println("2. Sửa Nhân Viên");
         System.out.println("3. Xóa Nhân Viên");
         System.out.println("4. Tính Lương");
-        System.out.println("5. Show");
+        System.out.println("5. Sắp xếp theo age");
+        System.out.println("6. Show");
         int choice = Integer.parseInt(scanner.nextLine());
         switch (choice) {
             case 1:
@@ -26,6 +31,13 @@ public class ManageNhanVien {
                 showTinhLuong();
                 break;
             case 5:
+                //theo name
+                nhanViens.sort(new SortByName());
+                //theo tuổi
+                nhanViens.sort(new SortByAge());
+
+                break;
+            case 6:
                 for (NhanVien nv : nhanViens) {
                     System.out.println(nv);
                 }
@@ -34,33 +46,21 @@ public class ManageNhanVien {
     }
 
     public void deleteNV() {
-        NhanVien[] newNV = new NhanVien[nhanViens.length - 1];
         System.out.println("Nhập id muốn xóa");
         int id = Integer.parseInt(scanner.nextLine());
-        int index = -1;
-        for (int i = 0; i < nhanViens.length; i++) {
-            if (nhanViens[i].getId() == id) {
-                index = i;
+        for (int i = 0; i < nhanViens.size(); i++) {
+            if (nhanViens.get(i).getId() == id) {
+                nhanViens.remove(nhanViens.get(i));
             }
         }
-        if (index != -1) {
-            for (int i = 0; i < newNV.length; i++) {
-                if (i < index) {
-                    newNV[i] = nhanViens[i];
-                } else {
-                    newNV[i] = nhanViens[i + 1];
-                }
-            }
-        }
-        nhanViens = newNV;
     }
 
     public void editNV() {
         System.out.println("Nhập id nhân viên muốn sửa :");
         int id = Integer.parseInt(scanner.nextLine());
-        for (int i = 0; i < nhanViens.length; i++) {
-            if (nhanViens[i].getId() == id) {
-                nhanViens[i] = createNhanVien(nhanViens[i] instanceof FullTime);
+        for (int i = 0; i < nhanViens.size(); i++) {
+            if (nhanViens.get(i).getId() == id) {
+                nhanViens.set(i, createNhanVien(nhanViens.get(i) instanceof FullTime));
             }
         }
     }
@@ -73,11 +73,11 @@ public class ManageNhanVien {
         switch (choice1) {
             case 1:
                 NhanVien nhanVienFull = createNhanVien(true);
-                add(nhanVienFull);
+                nhanViens.add(nhanVienFull);
                 break;
             case 2:
                 NhanVien nhanVienPart = createNhanVien(false);
-                add(nhanVienPart);
+                nhanViens.add(nhanVienPart);
                 break;
         }
     }
@@ -90,14 +90,14 @@ public class ManageNhanVien {
             case 1:
                 for (NhanVien nv : nhanViens) {
                     if (nv instanceof FullTime) {
-                        System.out.println(nv.getName() + " = " + nv.tinhLuong());
+                        System.out.println(nv.getName() + " = " + nv.getSalary());
                     }
                 }
                 break;
             case 2:
                 for (NhanVien nv : nhanViens) {
                     if (nv instanceof PartTime) {
-                        System.out.println(nv.getName() + " = " + nv.tinhLuong());
+                        System.out.println(nv.getName() + " = " + nv.getSalary());
                     }
                 }
                 break;
@@ -122,14 +122,5 @@ public class ManageNhanVien {
         }
     }
 
-    public void add(NhanVien nhanVien) {
-        NhanVien[] newNV = new NhanVien[nhanViens.length + 1];
-
-        for (int i = 0; i < nhanViens.length; i++) {
-            newNV[i] = nhanViens[i];
-        }
-        newNV[newNV.length - 1] = nhanVien;
-        nhanViens = newNV;
-    }
 
 }

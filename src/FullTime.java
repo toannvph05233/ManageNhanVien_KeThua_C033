@@ -11,7 +11,7 @@ public class FullTime extends NhanVien {
     }
 
     @Override
-    public double tinhLuong() {
+    public double getSalary() {
         return heSo * 30 * 500;
     }
 

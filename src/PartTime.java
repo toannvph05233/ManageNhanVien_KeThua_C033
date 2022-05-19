@@ -2,7 +2,7 @@ public class PartTime extends NhanVien {
     private int numberTime;
 
     public PartTime() {
-
+        super();
     }
 
     public PartTime(int id, String name, int age, int numberTime) {
@@ -11,17 +11,10 @@ public class PartTime extends NhanVien {
     }
 
     @Override
-    public double tinhLuong() {
+    public double getSalary() {
         return numberTime * 200;
     }
 
-    public int getNumberTime() {
-        return numberTime;
-    }
-
-    public void setNumberTime(int numberTime) {
-        this.numberTime = numberTime;
-    }
 
     @Override
     public String toString() {
